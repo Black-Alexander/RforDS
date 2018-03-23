@@ -1,6 +1,6 @@
 setwd('C:/Users/Sky/Documents/R/win-library/3.4')
 
-## Basic R Review Chapter 3
+####### Basic R Review Chapter 3
 
 library(tidyverse)
 
@@ -12,7 +12,7 @@ p1 <- ggplot(data = mpg) +
 p2 <- ggplot(data = mpg, aes(x = displ, y = hwy)) +
   geom_point()
 
-## Aesthetic mappings
+####### Aesthetic mappings
 
 p3 <- ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy, color = class))
@@ -64,15 +64,89 @@ p14 <- ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
   geom_smooth() +
   theme_bw()
 
+p15 <- ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = drv)) + 
+  geom_smooth(aes(linetype = drv)) +
+  theme_bw()
 
+p16 <- ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(aes(color = drv)) + 
+  geom_smooth() +
+  theme_bw()
 
+####### Statistical transformations
 
+p17 <- ggplot(data = diamonds) + 
+  stat_count(mapping = aes(x = cut))
 
+## Change stat count to proportion values 
 
+p18 <- ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, y = ..prop.., group = 10))
 
+demo <- tribble(
+  ~cut,         ~freq,
+  "Fair",       1610,
+  "Good",       4906,
+  "Very Good",  12082,
+  "Premium",    13791,
+  "Ideal",      21551
+)
 
+## You can generally use geoms and stats interchangeably
 
+p19 <- ggplot(data = demo) +
+  geom_bar(mapping = aes(x = cut, y = freq), stat = "identity")
 
+## Review ggplot2 cheatsheet for more stat f(x)
+
+p20 <- ggplot(data = diamonds) + 
+  stat_summary(
+    mapping = aes(x = cut, y = depth),
+    fun.ymin = min,
+    fun.ymax = max,
+    fun.y = median
+  )
+
+####### Position adjustments
+
+p21 <- ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, colour = cut))
+
+p22 <- ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = cut))
+
+## Pos Adjustments: identity, dodge, fill
+
+p23 <- ggplot(data = diamonds, mapping = aes(x = cut, fill = clarity)) + 
+  geom_bar(alpha = 1/5, position = "identity")
+
+p24 <- ggplot(data = diamonds, mapping = aes(x = cut, colour = clarity)) + 
+  geom_bar(fill = NA, position = "identity")
+
+p25 <- ggplot(data = diamonds, mapping = aes(x = cut, fill = clarity)) + 
+  geom_bar(alpha = 1/5, position = "stack")
+
+p26 <- ggplot(data = diamonds, aes(x = cut, colour = clarity)) + 
+  geom_bar(fill = NA, position = "stack")
+
+p27 <- ggplot(data = diamonds) + 
+  geom_bar(aes(x = cut, fill = clarity), position = "dodge")
+
+p28 <- ggplot(data = diamonds, aes(x = cut, fill = clarity)) + 
+  geom_bar(position = "dodge")
+
+## Adding randomness seems like a strange way to improve your plot
+## position = "jitter" to scatterplot especially if it's clustered
+
+p29 <- ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), position = "jitter")
+
+## No jitter
+p30 <- ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+####### Coordinate Systems
 
 
 
