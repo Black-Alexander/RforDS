@@ -1,4 +1,4 @@
-setwd('C:/Users/Sky/Documents/R/win-library/3.4')
+## setwd('C:/Users/Sky/Documents/R/win-library/3.4')
 
 ####### Basic R Review Chapter 3
 
@@ -107,7 +107,7 @@ p20 <- ggplot(data = diamonds) +
     fun.ymax = max,
     fun.y = median
   )
-
+p20
 ####### Position adjustments
 
 p21 <- ggplot(data = diamonds) + 
