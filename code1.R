@@ -193,12 +193,15 @@ p36 <- bar + coord_polar()
 #   <COORDINATE_FUNCTION> +
 #   <FACET_FUNCTION>
 
+####### Chapter 4 Workflow: Basics
 
+p37 <- ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
 
+filter(mpg, cyl == 8)
+filter(diamonds, carat > 3)
 
-
-
-
+####### Chapter 5: Data Transformation
 
 
 
