@@ -147,6 +147,25 @@ p30 <- ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy))
 
 ####### Coordinate Systems
+## Cartesian coordinate system where x & y positions act independently
+## coord_flip() switches x and y axes
+
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) +
+  geom_boxplot()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
