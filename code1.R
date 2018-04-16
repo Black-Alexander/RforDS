@@ -201,10 +201,8 @@ p37 <- ggplot(data = mpg) +
 filter(mpg, cyl == 8)
 filter(diamonds, carat > 3)
 
-####### Chapter 5: Data Transformation
 
-
-
+####### End
 
 
 
