@@ -150,8 +150,59 @@ p30 <- ggplot(data = mpg) +
 ## Cartesian coordinate system where x & y positions act independently
 ## coord_flip() switches x and y axes
 
-ggplot(data = mpg, mapping = aes(x = class, y = hwy)) +
+p31 <- ggplot(data = mpg, mapping = aes(x = class, y = hwy)) +
   geom_boxplot()
+
+p32 <- ggplot(data = mpg, mapping = aes(x = class, y = hwy)) +
+  geom_boxplot() +
+  coord_flip()
+
+## coord_quickmap() sets aspect ratio correctly for maps
+
+nz <- map_data("nz")
+
+p33 <- ggplot(nz, aes(long, lat, group = group)) +
+  geom_polygon(fill = "white", colour = "black")
+
+p34 <- ggplot(nz, aes(long, lat, group = group)) +
+  geom_polygon(fill = "white", colour = "black") +
+  coord_quickmap()
+
+## coord_polar() uses polar coordinates; connection between bar & Coxcomb
+
+bar <- ggplot(data = diamonds) +
+  geom_bar(
+    mapping = aes(x = cut, fill = cut),
+    show.legend = FALSE,
+    width = 1
+  ) +
+  theme(aspect.ratio = 1) +
+  labs(x = NULL, y = NULL)
+
+p35 <- bar + coord_flip()
+p36 <- bar + coord_polar()
+
+
+## 3.10 Layered Grammar of Graphics
+# ggplot(data = <DATA>) + 
+#   <GEOM_FUNCTION>(
+#     mapping = aes(<MAPPINGS>),
+#     stat = <STAT>, 
+#     position = <POSITION>
+#   ) +
+#   <COORDINATE_FUNCTION> +
+#   <FACET_FUNCTION>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
