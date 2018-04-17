@@ -31,22 +31,27 @@ names(flights)
 filter(flights, arr_delay >= 2)
 filter(flights, dest == "IAH" | dest == "HOU")
 
+table(is.na(flights$dep_time))
 
+## sum of all NAs
+sapply(flights, function(x) 
+  {sum(is.na(x))}
+  )
 
+arrange(flights, year, month, day)
 
+arrange(flights, desc(arr_delay))
 
+## Missing values are always sorted at the end
+df <- tibble(x = c(5, 2, NA))
+arrange(df, x)
 
+## Order by NA first???  HOW
+arrange(flights, desc(is.na(arr_delay)))
 
-
-
-
-
-
-
-
-
-
-
+arrange(flights, desc(minute))
+arrange(flights, desc(distance))
+arrange(flights, (distance))
 
 
 
