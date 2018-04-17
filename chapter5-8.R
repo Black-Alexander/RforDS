@@ -27,9 +27,9 @@ filter(df, is.na(x) | x > 1)
 
 ## 5.2.4 Exercises
 
-
-
-
+names(flights)
+filter(flights, arr_delay >= 2)
+filter(flights, dest == "IAH" | dest == "HOU")
 
 
 
