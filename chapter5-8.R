@@ -158,7 +158,20 @@ batters %>%
   geom_smooth(se = FALSE)
 #> `geom_smooth()` using method = 'gam'
 
+## Find the worst members of each group
+flights %>% 
+  group_by(year, month) %>% 
+  filter(rank(desc(arr_delay)) < 10)
 
+popular_dests <- flights %>% 
+  group_by(dest) %>% 
+  filter(n() > 365 
+  )
+
+popular_dests %>% 
+  group_by(dest) %>% 
+  select(carrier, dest) %>% 
+  arrange(dest)
 
 
 
