@@ -2,6 +2,7 @@
 
 library(tidyverse)
 library(nycflights13)
+library(hexbin)
 
 ####### Chapter 5: Data Transformation
 
@@ -231,17 +232,100 @@ ggplot(data = diamonds2, mapping = aes(x = x, y = y)) +
 
 ## Use mutate() to create new variables for the df
 
-nycflights13::flights %>% 
-  mutate(
-    cancelled = is.na(dep_time),
-    sched_hour = sched_dep_time %/% 100,
-    sched_min = sched_dep_time %% 100,
-    sched_dep_time = sched_hour + sched_min / 60
-  ) %>% 
-  ggplot(mapping = aes(sched_dep_time)) + 
-  geom_freqpoly(mapping = aes(colour = cancelled), binwidth = 1/4)
+# nycflights13::flights %>% 
+#   mutate(
+#     cancelled = is.na(dep_time),
+#     sched_hour = sched_dep_time %/% 100,
+#     sched_min = sched_dep_time %% 100,
+#     sched_dep_time = sched_hour + sched_min / 60
+#   ) %>% 
+#   ggplot(mapping = aes(sched_dep_time)) + 
+#   geom_freqpoly(mapping = aes(colour = cancelled), binwidth = 1/4)
+# 
+# head(nycflights13)
 
+## 7.5.1 Categorical and continuous variable
 
+# Explore the price of a diamond with its quality
 
+ggplot(data = diamonds, mapping = aes(x = price)) + 
+  geom_freqpoly(mapping = aes(colour = cut), binwidth = 500)
 
+ggplot(data = diamonds, mapping = aes(x = price, y = ..count..)) +
+  geom_bar()
+
+## Too much variability across prices so we will use density
+## Density is the count standardized  so that the area
+##  under each frequency polygon is one
+
+ggplot(data = diamonds, mapping = aes(x = price, y = ..density..)) +
+  geom_freqpoly(mapping = aes(colour = cut), binwidth = 500)
    
+ggplot(data = diamonds, mapping = aes(x = cut, y = price)) +
+  geom_boxplot()
+
+## Can use reorder() parameter in boxplot for ordered factors
+
+## Reorder class based on the median value of HWY
+
+ggplot(data = mpg) +
+  geom_boxplot(mapping = aes(x = reorder(class, hwy, FUN = median), y = hwy))
+
+## Flip the graph using coord_flip()
+
+ggplot(data = mpg) +
+  geom_boxplot(mapping = aes(x = reorder(class, hwy, FUN = median), y = hwy)) +
+  coord_flip()
+
+## Try another graph approach by using geom_tile() and fill using count
+## If the variables are unordered, it's best to order it
+
+diamonds %>% 
+  count(color, cut) %>%  
+  ggplot(mapping = aes(x = color, y = cut)) +
+  geom_tile(mapping = aes(fill = n))
+
+## For larger plots, d3heatmap or heatmaply pkgs are useful (interactive)
+
+
+# geom_bin2d() and geom_hex() divide the coordinate plane into 2d bins 
+# and then use a fill color to display how many points fall into each bin
+
+ggplot(data = smaller) +
+  geom_bin2d(mapping = aes(x = carat, y = price))
+
+# install.packages("hexbin")
+ggplot(data = smaller) +
+  geom_hex(mapping = aes(x = carat, y = price))
+
+## Bin the groups by using group in aes
+
+ggplot(data = smaller, mapping = aes(x = carat, y = price)) + 
+  geom_boxplot(mapping = aes(group = cut_width(carat, 0.1)))
+
+## Ways to add residual to a dataframe
+
+# MyData$Resids <- residuals(noise.lm)
+
+# add_residuals(data, model, var = "resid")
+
+#### if there are NA values for your lm() model then use this (if vector)
+## fit <- lm(y ~ x, data = mydata, weight = ind)
+# sel <- which(!is.na(fit))
+# mydata$resid <- NA
+# mydata$resid[sel] <- fit$resid
+
+## another way to plot residuals and x variable
+
+library(modelr)
+mod <- lm(log(price) ~ log(carat), data = diamonds)
+
+diamonds2 <- diamonds %>% 
+  add_residuals(mod) %>% 
+  mutate(resid = exp(resid))
+
+ggplot(data = diamonds2) + 
+  geom_point(mapping = aes(x = carat, y = resid))
+
+summary(mod)
+
