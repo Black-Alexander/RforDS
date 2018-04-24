@@ -1,6 +1,7 @@
 library(tidyverse)
+library(MASS)
 
-
+## https://www.linkedin.com/pulse/weighted-linear-regression-r-blaine-bateman-eaf-llc/
 ## Blaine Bateman example problem on Weighted Lin regression
 # model <- lm(y ~ x, data = x_data)
 # y_pred <- predict(model, data = new_x_data)
@@ -66,15 +67,42 @@ summary(model2)
 
 ggplot(data = model2, aes(x = resid(model2))) +
   geom_histogram(aes(y = ..density..)) +
+  geom_density() +
   theme_bw()
 
+## heteroskedasticity: residuals do exhibit the unwanted
+## variations we observe (need homoskedasticity)
+
+# Could apply weights to the linear regression model
+# How to normalize data
 
 
-
+# Weighted_fit <- rlm(Y ~ X, data = Y, weights = 1/sd_variance)
 
 ########################################################################
 
-
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  labs(title = "Fuel economy declination") +
+  theme(plot.title = element_text(size = rel(1.5)),
+        plot.background = element_rect(fill = "gray"),
+        panel.border = element_rect(linetype = "dashed", fill = NA),
+        panel.grid.major = element_line(colour = "black"),
+        # panel.grid.major.y = element_blank() # remove y grids
+        # panel.grid.major.x = element_blank() # remove x grids
+        
+        ## Axes
+        axis.line = element_line(size = 3, colour = "grey80"),
+        axis.text = element_text(colour = "red"),
+        axis.ticks = element_line(size = 2),
+        axis.ticks.length = unit(0.25, "cm"),
+        axis.title.y = element_text(size = rel(1.5), angle = 90),
+        axis.title.x = element_text(size = rel(1))
+        
+        ## Legend
+        
+        
+  )
 
 
 
