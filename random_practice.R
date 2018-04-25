@@ -113,8 +113,9 @@ ggplot(mtcars, aes(wt, mpg)) +
     x = "Weight (1000 lbs)",
     y = "Fuel economy (mpg)",
     colour = "Cylinders",
-    shape = "Transmission"
-  ) +
-  legend_justification = "top"
+    shape = "Transmission") + 
+  theme(legend.justification = "top",
+        legend.position = "bottom"
+        )
 
 
