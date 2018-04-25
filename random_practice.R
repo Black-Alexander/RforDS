@@ -30,8 +30,8 @@ ggplot(data = pred, aes(x = resid(pred))) +
 
 ggplot(data = pred, aes(x = resid(pred))) +
   geom_histogram(aes(y = ..density..)) +
-  geom_density(aes(y = ..density..)) 
-theme_bw()
+  geom_density(aes(y = ..density..)) +
+  theme_bw()
 
 ggplot(data = pred, aes(x = resid(pred))) +
   stat_bin(geom = "bar", position = "dodge", bins = 15) +
@@ -88,10 +88,12 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
         plot.background = element_rect(fill = "gray"),
         panel.border = element_rect(linetype = "dashed", fill = NA),
         panel.grid.major = element_line(colour = "black"),
+        panel.grid.minor = element_line(colour = "grey"), 
         # panel.grid.major.y = element_blank() # remove y grids
         # panel.grid.major.x = element_blank() # remove x grids
         
-        ## Axes
+        ## Axes --------------------------------------------- 
+        
         axis.line = element_line(size = 3, colour = "grey80"),
         axis.text = element_text(colour = "red"),
         axis.ticks = element_line(size = 2),
@@ -99,11 +101,20 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
         axis.title.y = element_text(size = rel(1.5), angle = 90),
         axis.title.x = element_text(size = rel(1))
         
-        ## Legend
-        
-        
+  
   )
 
 
+## Legend ---------------------------------------------------
+
+ggplot(mtcars, aes(wt, mpg)) +
+  geom_point(aes(colour = factor(cyl), shape = factor(vs))) +
+  labs(
+    x = "Weight (1000 lbs)",
+    y = "Fuel economy (mpg)",
+    colour = "Cylinders",
+    shape = "Transmission"
+  ) +
+  legend_justification = "top"
 
 
