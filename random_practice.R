@@ -110,12 +110,30 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
 ggplot(mtcars, aes(wt, mpg)) +
   geom_point(aes(colour = factor(cyl), shape = factor(vs))) +
   labs(
+    title = "Weights and Mpg",
     x = "Weight (1000 lbs)",
     y = "Fuel economy (mpg)",
     colour = "Cylinders",
     shape = "Transmission") + 
-  theme(legend.justification = "top",
-        legend.position = "bottom"
+  theme(legend.justification = c("right","top"),
+        legend.title = element_text(face = "bold"),
+        legend.position = c(.95, .95), #"bottom"
+        legend.box.just = "right",
+        legend.margin = margin(2, 2, 2, 2),
+        legend.key.size = unit(.25, "cm"),
+        #legend.key.width = unit(5, "cm")
+        #legend.text = element_text(colour = 'red'
+         #, angle = 45, size = 10, hjust = 3, vjust = 3, face = 'bold')
+        #legend.box.background =  element_rect(),
+        legend.background = element_rect(colour = "light gray", size = .25), 
+        plot.title = element_text(size = rel(1.5)),
+        plot.margin = margin(15, 15, 15, 15),
+        plot.background = element_rect(fill = "gray", linetype = "dashed"),
+        panel.grid.minor = element_line(colour = "grey"),
+        panel.border = element_rect(linetype = "dashed", fill = NA),
+        axis.title.y = element_text(colour = "black"),
+        axis.ticks = element_line(colour = "black")
         )
 
+## Strips -----------------------------------------------------
 
