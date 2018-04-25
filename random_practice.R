@@ -137,3 +137,29 @@ ggplot(mtcars, aes(wt, mpg)) +
 
 ## Strips -----------------------------------------------------
 
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  facet_wrap( ~ cyl ) +
+  theme(
+    strip.background = element_rect(colour = "black", fill = "light pink"),
+    strip.text = element_text(colour = "white", face = "bold"),
+    panel.spacing = unit(1, "lines")
+    
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
