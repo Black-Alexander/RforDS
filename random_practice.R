@@ -1,5 +1,6 @@
 library(tidyverse)
 library(MASS)
+library(gridExtra)
 
 ## https://www.linkedin.com/pulse/weighted-linear-regression-r-blaine-bateman-eaf-llc/
 ## Blaine Bateman example problem on Weighted Lin regression
@@ -148,14 +149,57 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
     )
 
 
+# par(mfrow = c(2,1))
+
+p1 <- ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  facet_wrap( ~ cyl) +
+  theme(
+    strip.background = element_rect(colour = "black", fill = "light pink"),
+    strip.text = element_text(colour = "white", face = "bold"),
+    panel.spacing = unit(1, "cm")
+    
+  )
 
 
+ggplot(data = mtcars, aes(x = wt, y = mpg, col = factor(cyl))) +
+  geom_point() +
+  facet_wrap( ~ cyl) +
+  labs(
+    title = "Weights and Mpg",
+    sub = "Subtitle",
+    x = "Weight (1000 lbs)",
+    y = "Fuel economy (mpg)",
+    colour = "Cylinders",
+    shape = "Transmission") +
+  # ylim(c(0,100)) + # limit y axis range
+    # alternatives to limit range
+    # scale_x_continuous(limits = c(0,50))
+  theme(
+    strip.background = element_rect(colour = "black", fill = "light pink"),
+    strip.text = element_text(colour = "white", face = "bold"),
+    panel.spacing = unit(1, "lines"),
+    plot.title = element_text(size = 10, hjust = 0.5, lineheight = 0.8,
+                              vjust = 1),
+     #hjust = 0.5 to center or margin = margin(10, 0 ,10 ,0)
+    plot.subtitle = element_text(size = rel(.6)),
+    axis.ticks = element_blank(),
+    axis.text = element_blank(), # remove tick text and ticks
+    #axis.text.x = element_text(color, angle , size , vjust ) # change size of and rotate axis text
+    #legend.title = element_blank()
+    legend.title = element_text(colour = "chocolate", size = 10, face = "bold"),
+    legend.key = element_rect(fill = "light pink"),
+    panel.grid.major = element_line(colour = "grey"),
+    panel.grid.minor = element_line(colour = "grey")
+    # plot.background = element_rect(fill = NA)
+    
+    ) +
+  scale_color_discrete(name = "Cylindas")
 
 
-
-
-
-
+# grid.arrange(p1,p2,nrow = 2)
+# additional practice
+# http://zevross.com/blog/2014/08/04/beautiful-plotting-in-r-a-ggplot2-cheatsheet-3/
 
 
 
