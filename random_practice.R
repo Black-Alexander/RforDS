@@ -125,7 +125,7 @@ ggplot(mtcars, aes(wt, mpg)) +
         #legend.key.width = unit(5, "cm")
         #legend.text = element_text(colour = 'red'
          #, angle = 45, size = 10, hjust = 3, vjust = 3, face = 'bold')
-        #legend.box.background =  element_rect(),
+        # legend.box.background =  element_rect(),
         legend.background = element_rect(colour = "light gray", size = .25), 
         plot.title = element_text(size = rel(1.5)),
         plot.margin = margin(15, 15, 15, 15),
@@ -188,9 +188,10 @@ ggplot(data = mtcars, aes(x = wt, y = mpg, col = factor(cyl))) +
     #axis.text.x = element_text(color, angle , size , vjust ) # change size of and rotate axis text
     #legend.title = element_blank()
     legend.title = element_text(colour = "chocolate", size = 10, face = "bold"),
-    legend.key = element_rect(fill = "light pink"),
+    legend.key = element_rect(fill = "white"),
     panel.grid.major = element_line(colour = "grey"),
-    panel.grid.minor = element_line(colour = "grey")
+    panel.grid.minor = element_line(colour = "grey"),
+    legend.background = element_rect(colour = "black", linetype = "dashed", fill = "white")
     # plot.background = element_rect(fill = NA)
     
     ) +
@@ -201,7 +202,41 @@ ggplot(data = mtcars, aes(x = wt, y = mpg, col = factor(cyl))) +
 # additional practice
 # http://zevross.com/blog/2014/08/04/beautiful-plotting-in-r-a-ggplot2-cheatsheet-3/
 
-
+ggplot(data = mtcars, aes(x = wt, y = mpg, col = factor(cyl))) +
+  geom_point() +
+  geom_smooth(
+    aes(group = 1), 
+    method = "loess", 
+    span = 0.7, 
+    se = FALSE,
+    col = "black",
+    linetype = "dashed"
+    ) +
+  labs(
+    title = "Weight vs. MPG with Linear Regression Line",
+    x = "Weight (KG)",
+    y = "Miles per Gallon",
+    col = "Cylinders"
+  ) +
+  theme(
+    legend.title = element_text(colour = "blue", face = "bold", size = 7),
+    legend.key = element_rect(fill = "light grey"),
+    legend.background = element_rect(colour = "black", linetype = "dashed"),
+    legend.position = c(.9, .70),
+    legend.key.size = unit(.5, "cm"),
+    legend.margin = margin(4, 4, 4, 4),
+    plot.title = element_text(face = "bold", size = 10, hjust = .5, lineheight = 1, vjust = 1),
+    plot.background = element_rect(fill = "light grey", linetype = "dashed", colour = "red"),
+    panel.border = element_rect(linetype = "dashed", fill = NA),
+    panel.grid.major = element_line(colour = "light pink"),
+    panel.grid.minor = element_line(colour = "black"),
+    # axis.title = element_text(face = "bold", colour = "red"),
+    # axis.ticks = element_line(colour = "purple"),
+    # put axis ticks and text to blank()
+    axis.ticks = element_blank(), # line 233
+    axis.text = element_blank()
+    
+  )
 
 
 
