@@ -1,6 +1,7 @@
 library(tidyverse)
 library(MASS)
 library(gridExtra)
+library(ggthemes)
 
 ## https://www.linkedin.com/pulse/weighted-linear-regression-r-blaine-bateman-eaf-llc/
 ## Blaine Bateman example problem on Weighted Lin regression
@@ -225,9 +226,11 @@ ggplot(data = mtcars, aes(x = wt, y = mpg, col = factor(cyl))) +
     legend.position = c(.9, .70),
     legend.key.size = unit(.5, "cm"),
     legend.margin = margin(4, 4, 4, 4),
+    
     plot.title = element_text(face = "bold", size = 10, 
                               hjust = .5, lineheight = 1, vjust = 1),
     plot.background = element_rect(fill = "light grey", linetype = "dashed", colour = "red"),
+    
     panel.border = element_rect(linetype = "dashed", fill = NA),
     panel.grid.major = element_line(colour = "light pink"),
     panel.grid.minor = element_line(colour = "black"),
@@ -244,20 +247,43 @@ ggplot(data = mtcars, aes(x = wt, y = mpg, col = factor(cyl))) +
   # scale_fill_brewer(palette = "dark")
   # scale_color_gradientn(colours = rainbow(5))
 
-### Gradient colors for histograms
+### Gradient colors for normal distribution histogram
+
 set.seed(1234)
 x <- rnorm(200)
 
 qplot(x = x, fill = ..count.., geom = "histogram")  +
-  scale_fill_gradient(low = "blue", high = "red") +
+  scale_fill_gradient(low = "blue", high = "aquamarine4") +
   labs(
     title = "Normal Distribution Chart",
     x = "X",
     y = "Count"
   ) +
   theme(
-    axis.title.x = element_text(colour = "Red") # xlab("x title, colour = "red")
+    ## Start with axis, legend, panel, strip, plot
+    
+    axis.title.x = element_text(colour = "white"), # xlab("x title, colour = "red")
+    axis.title.y = element_text(colour = "Blue", size = 10), # face, family, vjust, hjust
+    axis.ticks.x = element_line(colour = "pink"),
+    
+    plot.title = element_text(face = "bold", size = 10,
+                              vjust = 4, hjust = 0.5, lineheight = 10),
+    plot.background = element_rect(fill = "darkseagreen", colour = "red", linetype = "dashed"),
+    plot.margin = unit(c(1, 1, 1, 1), "cm"), # top, right, bottom, left
+    
+    panel.border = element_rect(linetype = "dashed", fill = NA),
+    panel.grid.major = element_line(colour = "light pink"),
+    panel.grid.minor = element_line(colour = "black")
     
   )
+
+### theme_set(theme_bw()) # theme set for entire session
+
+####### Take a look at all the default themes (theme_economist) + scale_colour_economist()
+
+#### Subtopics: Functions, etc.
+## scale_color_gradient2( midpoints = mid, low = "", mid = "",  high" = "")
+
+
 
 
