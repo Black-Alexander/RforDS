@@ -127,7 +127,7 @@ ggplot(mtcars, aes(wt, mpg)) +
          #, angle = 45, size = 10, hjust = 3, vjust = 3, face = 'bold')
         # legend.box.background =  element_rect(),
         legend.background = element_rect(colour = "light gray", size = .25), 
-        plot.title = element_text(size = rel(1.5)),
+        plot.title = element_text(size = 2, hjust = 0.5),
         plot.margin = margin(15, 15, 15, 15),
         plot.background = element_rect(fill = "gray", linetype = "dashed"),
         panel.grid.minor = element_line(colour = "grey"),
@@ -225,7 +225,8 @@ ggplot(data = mtcars, aes(x = wt, y = mpg, col = factor(cyl))) +
     legend.position = c(.9, .70),
     legend.key.size = unit(.5, "cm"),
     legend.margin = margin(4, 4, 4, 4),
-    plot.title = element_text(face = "bold", size = 10, hjust = .5, lineheight = 1, vjust = 1),
+    plot.title = element_text(face = "bold", size = 10, 
+                              hjust = .5, lineheight = 1, vjust = 1),
     plot.background = element_rect(fill = "light grey", linetype = "dashed", colour = "red"),
     panel.border = element_rect(linetype = "dashed", fill = NA),
     panel.grid.major = element_line(colour = "light pink"),
@@ -234,11 +235,29 @@ ggplot(data = mtcars, aes(x = wt, y = mpg, col = factor(cyl))) +
     # axis.ticks = element_line(colour = "purple"),
     # put axis ticks and text to blank()
     axis.ticks = element_blank(), # line 233
-    axis.text = element_blank()
+    # axis.text = element_blank(),
+    axis.text.x = element_text(colour = "red")
+    
+  ) 
+  # manual colors remove from theme
+  # scale_fill_manual(values=c("#999999", "#E69F00", "#56B4E9")) 
+  # scale_fill_brewer(palette = "dark")
+  # scale_color_gradientn(colours = rainbow(5))
+
+### Gradient colors for histograms
+set.seed(1234)
+x <- rnorm(200)
+
+qplot(x = x, fill = ..count.., geom = "histogram")  +
+  scale_fill_gradient(low = "blue", high = "red") +
+  labs(
+    title = "Normal Distribution Chart",
+    x = "X",
+    y = "Count"
+  ) +
+  theme(
+    axis.title.x = element_text(colour = "Red") # xlab("x title, colour = "red")
     
   )
-
-
-
 
 
