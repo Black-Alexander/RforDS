@@ -283,7 +283,7 @@ qplot(x = x, fill = ..count.., geom = "histogram")  +
 
 #### Subtopics: Functions, etc.
 ## scale_color_gradient2( midpoints = mid, low = "", mid = "",  high" = "")
-
+## geom_tile, scale_fill_gradient2
 
 
 
