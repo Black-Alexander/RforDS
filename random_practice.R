@@ -253,6 +253,7 @@ set.seed(1234)
 x <- rnorm(200)
 
 qplot(x = x, fill = ..count.., geom = "histogram")  +
+  # stat_bin(binwidth = .5) +
   scale_fill_gradient(low = "blue", high = "aquamarine4") +
   labs(
     title = "Normal Distribution Chart",
@@ -271,19 +272,51 @@ qplot(x = x, fill = ..count.., geom = "histogram")  +
     plot.background = element_rect(fill = "darkseagreen", colour = "red", linetype = "dashed"),
     plot.margin = unit(c(1, 1, 1, 1), "cm"), # top, right, bottom, left
     
+    ## Remove panel borders and grid lines - change everything to element_blank()
     panel.border = element_rect(linetype = "dashed", fill = NA),
     panel.grid.major = element_line(colour = "light pink"),
-    panel.grid.minor = element_line(colour = "black")
+    panel.grid.minor = element_line(colour = "black"),
     
+    # legend.key = element_rect(fill = "transparent", colour = "transparent")
+    legend.key = element_rect(fill = "darkseagreen", colour = "darkseagreen"),
+    # linetype: blank, solid, dashed, dotted, dotdash, longdash, twodash
+    legend.background = element_rect(fill = "darkseagreen", linetype = "solid", colour = "white")
+
   )
 
 ### theme_set(theme_bw()) # theme set for entire session
 
-####### Take a look at all the default themes (theme_economist) + scale_colour_economist()
+### study ggthemes: 
+ ##Take a look at all the default themes (theme_economist) + scale_colour_economist()
+ ## theme_stata() + scale_color_stat()
+ ## theme_wsj() + scale_color_wsj("colors6")
 
 #### Subtopics: Functions, etc.
 ## scale_color_gradient2( midpoints = mid, low = "", mid = "",  high" = "")
 ## geom_tile, scale_fill_gradient2
+
+## Practice stat_smooth()
+
+ggplot(data = mtcars, aes(x = wt, y = mpg, colour = factor(cyl))) +
+  geom_point() +
+  geom_smooth(method = "loess", se = FALSE, span = .7)
+
+# myColors <- c(brewer.pal(3, "Dark2"), "black")
+
+ggplot(data = mtcars, aes(x = wt, y = mpg, colour = factor(cyl))) +
+  geom_point() +
+  stat_smooth(method = "lm", se = FALSE) +
+  stat_smooth(aes(group = 1, col = "All"), # add All to legend (cant add colour or wont show)
+              method = "loess",
+              span = 0.7,
+              se = FALSE,
+              linetype = "dashed",
+              size = 2) 
+  # scale_color_manual("Cylinders", values = myColors)
+
+
+
+
 
 
 
