@@ -314,9 +314,144 @@ ggplot(data = mtcars, aes(x = wt, y = mpg, colour = factor(cyl))) +
               size = 2) 
   # scale_color_manual("Cylinders", values = myColors)
 
+## http://r-statistics.co/Complete-Ggplot2-Tutorial-Part2-Customizing-Theme-With-R-Code.html
+## Part 2: Customizing the look and feel
+
+## Samples: http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html#1.%20Correlation
+
+library(ggcorrplot)
+
+## Build a correlation matrix
+
+mtcars <- data(mtcars)
+corr <- round(cor(mtcars), 1)
+
+# Plot
+
+ggcorrplot(corr, 
+           hc.order = TRUE, 
+           type = "lower", # direction of charts
+           lab = TRUE, 
+           lab_size = 3, # text size 
+           method = "square", # shapes of each correlation
+           colors = c("tomato2", "white", "springgreen3"), 
+           title = "Correlogram of mtcars", 
+           ggtheme = theme_bw
+           
+           )
+
+# Build a diverging bar chart of positive and negative values
+# data("mtcars")  # load data
+mtcars$`car name` <- rownames(mtcars)  # create new column for car names
+mtcars$mpg_z <- round((mtcars$mpg - mean(mtcars$mpg))/sd(mtcars$mpg), 2)  # compute normalized mpg
+mtcars$mpg_type <- ifelse(mtcars$mpg_z < 0, "below", "above")  # above / below avg flag
+mtcars <- mtcars[order(mtcars$mpg_z), ]  # sort
+mtcars$`car name` <- factor(mtcars$`car name`, levels = mtcars$`car name`)  # convert to factor to retain sorted order in plot.
+
+## Diverging Barcharts
+
+ggplot(mtcars, aes(x = `car name`, y = mpg_z, label = mpg_z)) + 
+  geom_bar(stat = 'identity', aes(fill = mpg_type), width = .5)  +
+  geom_point() +
+  scale_fill_manual(name = "Mileage", 
+                    labels = c("Above Average", "Below Average"), 
+                    values = c("above" = "#00ba38", "below" = "#f8766d")) + 
+  labs(subtitle = "Normalised mileage from 'mtcars'", 
+       title = "Diverging Bars") + 
+  coord_flip() +
+  theme(
+    legend.position = "bottom",
+    legend.key.size = unit(0.2, "cm"),
+    legend.background = element_rect(colour = "black", fill = "lightblue"),
+    plot.title = element_text(hjust = 0.5, face = "bold", lineheight = 0.5),
+    plot.subtitle =  element_text(hjust = 0.5, size = 8, face = "italic", lineheight =  0.5),
+    plot.background = element_rect("lightblue"),
+    axis.title = element_text(colour = "black", face = "bold"),
+    axis.text = element_text(colour = "black"),
+    panel.grid.major = element_line(colour = "black"),
+    panel.grid.minor = element_line(colour = "black")   
+    
+  )
+
+## Diverging Lollipop Chart
+# lollipop chart shows bar info and diverging bar but more modern
+# how: replace geom_bar with geom_point and geom_segment
+
+theme_set(theme_bw())
+
+ggplot(mtcars, aes(x = `car name`, y = mpg_z, label = mpg_z)) + 
+  geom_point(stat = 'identity', fill = "black", size = 6)  +
+  geom_segment(aes(y = 0, 
+                   x = `car name`, 
+                   yend = mpg_z, 
+                   xend = `car name`), 
+               color = "black") +
+  geom_text(color = "white", size = 2) +
+  labs(title = "Diverging Lollipop Chart", 
+       subtitle = "Normalized mileage from 'mtcars': Lollipop") + 
+  ylim(-2.5, 2.5) +
+  coord_flip()
+
+## Set theme - Create custom function for theme: theme_custom()
+
+theme_custom <- theme(
+  legend.position = "bottom",
+  legend.key.size = unit(0.2, "cm"),
+  legend.background = element_rect(colour = "black", fill = "lightblue"),
+  plot.title = element_text(hjust = 0.5, face = "bold", lineheight = 0.5),
+  plot.subtitle =  element_text(hjust = 0.5, size = 8, face = "italic", lineheight =  0.5),
+  plot.background = element_rect("lightblue"),
+  axis.title = element_text(colour = "black", face = "bold"),
+  axis.text = element_text(colour = "black"),
+  panel.grid.major = element_line(colour = "black"),
+  panel.grid.minor = element_line(colour = "black")   
+  
+)
 
 
+theme_example <- function (base_size = 11, base_family = "") 
+{
+  theme_grey(base_size = base_size, base_family = base_family) %+replace% 
+    theme(
+      panel.background = element_rect(fill = "white", colour = NA), 
+      panel.border = element_rect(fill = NA, colour = "grey20"), 
+      panel.grid.major = element_line(colour = "grey92"), 
+      panel.grid.minor = element_line(colour = "grey92", size = 0.25), 
+      strip.background = element_rect(fill = "grey85", colour = "grey20"), 
+      legend.key = element_rect(fill = "white", colour = NA), 
+      complete = TRUE)
+}
 
 
+theme_custom <- function (base_size = 11, base_family = "") 
+{
+  theme_grey(base_size = base_size, base_family = base_family) %+replace% 
+    theme(
+      legend.position = "bottom",
+      legend.key.size = unit(0.2, "cm"),
+      legend.background = element_rect(colour = "black", fill = "lightblue"),
+      plot.title = element_text(hjust = 0.5, face = "bold", lineheight = 0.5),
+      plot.subtitle =  element_text(hjust = 0.5, size = 8, face = "italic", lineheight =  0.5),
+      plot.background = element_rect("lightblue"),
+      axis.title = element_text(colour = "black", face = "bold"),
+      axis.text = element_text(colour = "black"),
+      panel.grid.major = element_line(colour = "black"),
+      panel.grid.minor = element_line(colour = "black"))  
 
+}
 
+## Diverging dot plot (similar to lollipop without stick)
+
+# Plot
+
+ggplot(mtcars, aes(x = `car name`, y = mpg_z, label = mpg_z)) + 
+  geom_point(stat = 'identity', aes(col = mpg_type), size = 6)  +
+  scale_color_manual(name = "Mileage", 
+                     labels = c("Above Average", "Below Average"), 
+                     values = c("above" = "#00ba38", "below" = "#f8766d")) + 
+  geom_text(color = "white", size = 2) +
+  labs(title = "Diverging Dot Plot", 
+       subtitle = "Normalized mileage from 'mtcars': Dotplot") + 
+  theme_custom() +
+  ylim(-2.5, 2.5) +
+  coord_flip()
