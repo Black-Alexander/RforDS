@@ -455,3 +455,62 @@ ggplot(mtcars, aes(x = `car name`, y = mpg_z, label = mpg_z)) +
   theme_custom() +
   ylim(-2.5, 2.5) +
   coord_flip()
+
+## Create funnel pyramid chart: Email campaigns
+options(scipen = 999)  # turns of scientific notations like 1e+40
+
+# Read data
+email_campaign_funnel <- read.csv("https://raw.githubusercontent.com/selva86/datasets/master/email_campaign_funnel.csv")
+
+# X Axis Breaks and Labels 
+brks <- seq(-15000000, 15000000, 5000000)
+lbls = paste0(as.character(c(seq(15, 0, -5), seq(5, 15, 5))), "m")
+
+# Plot
+ggplot(email_campaign_funnel, aes(x = Stage, y = Users, fill = Gender)) +   # Fill column
+  geom_bar(stat = "identity", width = .6) +   # draw the bars
+  scale_y_continuous(breaks = brks,   # Breaks
+                     labels = lbls) + # Labels
+  coord_flip() +  # Flip axes
+  labs(title="Email Campaign Funnel") +
+  theme_tufte() +  # Tufte theme from ggfortify
+  theme(plot.title = element_text(hjust = .5), 
+        axis.ticks = element_blank()) +   # Centre plot title
+  scale_fill_brewer(palette = "Dark2")  # Color palette
+
+
+## Create heatmap for weekdays/weekmonth
+
+library(scales)
+library(zoo)
+library(plyr)
+
+df <- read.csv("https://raw.githubusercontent.com/selva86/datasets/master/yahoo.csv")
+df$date <- as.Date(df$date)  # format date
+df <- df[df$year >= 2012, ]  # filter reqd years
+
+# Create Month Week
+df$yearmonth <- as.yearmon(df$date)
+df$yearmonthf <- factor(df$yearmonth)
+df <- ddply(df,.(yearmonthf), transform, monthweek = 1 + week - min(week))  # compute week number of month
+df <- df[, c("year", "yearmonthf", "monthf", "week", "monthweek", "weekdayf", "VIX.Close")]
+head(df)
+#>   year yearmonthf monthf week monthweek weekdayf VIX.Close
+#> 1 2012   Jan 2012    Jan    1         1      Tue     22.97
+#> 2 2012   Jan 2012    Jan    1         1      Wed     22.22
+#> 3 2012   Jan 2012    Jan    1         1      Thu     21.48
+#> 4 2012   Jan 2012    Jan    1         1      Fri     20.63
+#> 5 2012   Jan 2012    Jan    2         2      Mon     21.07
+#> 6 2012   Jan 2012    Jan    2         2      Tue     20.69
+
+
+# Plot
+ggplot(data = df, aes(monthweek, weekdayf, fill = VIX.Close)) + 
+  geom_tile(colour = "white") + 
+  facet_grid(year~monthf) + 
+  scale_fill_gradient(low = "red", high = "green") +
+  labs(x = "Week of Month",
+       y = "",
+       title = "Time-Series Calendar Heatmap", 
+       subtitle = "Yahoo Closing Price", 
+       fill = "Close")
