@@ -15,12 +15,6 @@ You will need to download R from this website [Cran](https://cran.r-project.org/
 library(tidyverse)
 ```
 
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
 ## Authors
 
 * **Hadley WIckham**
