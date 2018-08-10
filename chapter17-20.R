@@ -21,7 +21,7 @@ library(tidyverse)
   # Tools to extract out this duplicated code, so for each common for loop pattern gets its own function
 
 #**************
-## Master vocabulary for FP, you can solve many common iteration problems with less code, more ease, and fewer errors.
+# Master vocabulary for FP, you can solve many common iteration problems with less code, more ease, and fewer errors.
 #**************
 
 # Create tibble
@@ -105,6 +105,83 @@ for (i in seq_along(means)) {
   out[[i]] <- rnorm(n, means[[i]])
 }
 str(out)
+out
+
+# Create a function and while loop to find 3 heads in a row
+flip <- function() sample(c("T", "H"), 1)
+flips <- 0
+nheads <- 0
+
+# While() loops usually used in simulations - not widely used
+
+while (nheads < 3) {
+  if (flip() == "H") {
+    nheads <- nheads + 1
+  } else {
+    nheads <- 0
+  }
+  flips <- flips + 1
+}
+flips
+
+# What does this code do?
+trans <- list(
+  disp = function(x) x * 0.01673871,
+  am = function(x) {factor(x, labels = c("auto", "manual"))}
+)
+for (var in names(trans)) {
+  mtcars[[var]] <- trans[[var]](mtcars[[var]])
+}
+trans[1]
+
+# For loops vs. Functionals (More valuable in R)
+
+# Create a tibble
+df3 <- tibble(
+  a = rnorm(10),
+  b = rnorm(10),
+  c = rnorm(10),
+  d = rnorm(10)
+)
+
+# Create a function to extract means
+col_mean <- function(df) {
+  output <- vector("double", length(df))
+  for (i in seq_along(df)) {
+    output[i] <- mean(df[[i]])
+  }
+  output
+}
+
+col_mean(df3)
+
+# Repeat
+
+col_mean_s <- function(df) {               # Create a function
+  output <- vector("double", length(df))   # Create an empty vector to hold the data - vector("data type", length)
+  for (i in seq_along(df)) {               # Create a for loop to loop through df
+    output[i] <- mean(df[[i]])             # Input data into new vector for each position 
+  }
+}
+
+# Summary by function (Functional programming)
+col_summary <- function(df, fun) {
+  output <- vector("double", length(df))
+  for (i in seq_along(df)) {
+    output[i] <- fun(df[[i]])
+  }
+  output
+}
+
+col_summary(df3, median)
+col_summary(df3, mean)
+
+
+
+
+
+
+
 
 
 
