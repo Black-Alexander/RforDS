@@ -1,4 +1,9 @@
-library(purrr)
+library(tidyverse)
+
+
+### Chapter 17: Iteration with purrr
+
+# purrr pkg
 
 ## Reducing code duplication has 3 main benefits
 # 1. It's easier to see the intent of the code
@@ -18,5 +23,93 @@ library(purrr)
 #**************
 ## Master vocabulary for FP, you can solve many common iteration problems with less code, more ease, and fewer errors.
 #**************
+
+# Create tibble
+df <- tibble(
+  a = rnorm(10),
+  b = rnorm(10),
+  c = rnorm(10),
+  d = rnorm(10)
+)
+
+# Compute the median of each column
+# Manual
+median(df$a) # repeat for b - d
+
+# Create a for loop so you do not repeat
+output <- vector("double", ncol(df))
+
+for (i in seq_along(df)) {
+  output[[i]] <- median(df[[i]])
+}
+output
+
+# Calculate the mean for every column in mtcars
+output_m <- vector("double", ncol(mtcars))
+
+for (i in seq_along(mtcars)) {
+  output_m[[i]] <- median(mtcars[[i]])
+}
+output_m
+
+# Number generators
+# seq(), rnorm(), runif()
+
+# Create for loop
+out <- ""
+for (x in letters) {
+  out <- stringr::str_c(out, x)
+}
+
+x <- sample(100)
+sd <- 0
+for (i in seq_along(x)) {
+  sd <- sd + (x[i] - mean(x))^2
+}
+sd <- sqrt(sd / length(x) - 1)
+sd
+
+## Variations of the basic theme of the for loop:
+# 1. Modifying an existing object, instead of creating a new object.
+# 2. Looping over names or values, instead of indices.
+# 3. Handling outputs of unknown length.
+# 4. Handling sequences of unknown length.
+
+df2 <- tibble(
+  a = rnorm(10),
+  b = rnorm(10),
+  c = rnorm(10),
+  d = rnorm(10)
+)
+# Rescale using for loop
+for (i in seq_long(df2)) {
+  df2[[i]] <- rescale01(df2[[i]])
+}
+
+# Create a loop over numeric indicies to extract name and value
+for (i in seq_along(df)) {
+  name <- names(df)[[i]] # names(df)[[loop position]]
+  value <- x[[i]]       # df[[loop position]]
+}
+
+# Repeat
+for (i in seq_along(df)) {
+  names <- names(df)[[i]]
+  x <- df[[i]]
+}
+
+# Create a vector called out that stores a list, length of means
+out <- vector("list", length(means))
+for (i in seq_along(means)) {
+  n <- sample(100,1)
+  out[[i]] <- rnorm(n, means[[i]])
+}
+str(out)
+
+
+
+
+
+
 
 
