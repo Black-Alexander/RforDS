@@ -225,9 +225,7 @@ models %>%
 
 # lapply() is basically identical to map() except that map() is consistent with all other functions
 
-
-
-
+looper("numeric", mtcars, mean)
 
 
 
