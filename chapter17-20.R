@@ -176,6 +176,63 @@ col_summary <- function(df, fun) {
 col_summary(df3, median)
 col_summary(df3, mean)
 
+# Fit a linear model to each cylinder group
+models <- mtcars %>% 
+  split(.$cyl) %>% 
+  map(function(df) lm(mpg ~ wt, data = df))
+
+models
+
+models <- mtcars %>% 
+  split(.$cyl) %>% 
+  map( ~ lm(mpg ~ wt, data = .)) # used . as a pronounce; refers to current list element
+models
+
+# Summary (R^2)
+models %>% 
+  map(summary) %>% 
+  map_dbl(~.$r.squared)
+
+models %>% 
+  map(summary) %>% 
+  map_dbl("r.squared")
+
+col_summary <- function(df, fun) {         # Create a function with two parameters
+  output <- vector("double", length(df))   # Create an empty vector to store mean
+  for (i in seq_along(df)) {               # Create a for loop to loop through df
+     output[i] <- mean(df[[i]])            # Input new mean data into vector position
+  }
+}
+
+
+df %>% 
+  map_dbl(mean)
+
+df %>% 
+  map_dbl(median)
+
+df %>% 
+  map_dbl(sd)
+
+
+models %>% 
+  map(summary) %>% 
+  map_dbl(~.$r.squared)
+
+models %>% 
+  map(summary) %>% 
+  map_dbl("r.squared")
+
+# lapply() is basically identical to map() except that map() is consistent with all other functions
+
+
+
+
+
+
+
+
+
 
 
 
